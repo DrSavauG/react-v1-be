@@ -24,9 +24,9 @@ app.all('*', (req: Request, res: Response) => {
 
 
 
-const start = () => {
+const start = async () => {
   try {
-    mongoose.connect(MONGO_CONNECTION, {
+    await mongoose.connect(MONGO_CONNECTION, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false,
