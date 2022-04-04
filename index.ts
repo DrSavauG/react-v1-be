@@ -22,11 +22,21 @@ app.all('*', (req: Request, res: Response) => {
   res.sendStatus(404);
 });
 
-mongoose.connect(MONGO_CONNECTION, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true,
-});
 
-app.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));
+
+const start = () => {
+  try {
+    mongoose.connect(MONGO_CONNECTION, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+      useCreateIndex: true,
+    });
+
+    app.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+start();

@@ -1,21 +1,25 @@
 import * as asyncHandler from 'express-async-handler';
 import { Router, Request, Response } from 'express';
-
 import {
   jsonStreamStringify,
   getSome,
-  createTodo,
-  getTodoById,
-  updateTodo,
-  deleteTodo,
-} from '../services/todofunc';
+  createItem,
+  getItemById,
+  updateItem,
+  deleteItem,
+  jsonStreamStringifyAll
+} from '../services/functions';
 
 const api = Router();
 
 api.get(
   '/',
   asyncHandler(async (req: Request, res: Response) => {
-    const { page, limit } = req.query;
+    const { page, limit,all } = req.query;
+    if(all){
+      res.type('json');
+      return jsonStreamStringifyAll().pipe(res);
+    }
     if (page) {
       res.send(await getSome(+page, +limit));
     } else {
@@ -29,7 +33,7 @@ api.get(
   '/:id',
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
-    res.send(await getTodoById(id));
+    res.send(await getItemById(id));
   })
 );
 
@@ -40,8 +44,8 @@ api.post(
     if (!title) {
       return res.sendStatus(418);
     }
-    await createTodo({ title, body });
-    res.sendStatus(201);
+    const outcome = await createItem(req.body);
+    res.json(outcome._id);
   })
 );
 
@@ -50,7 +54,7 @@ api.put(
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
     const { title, body } = req.body;
-    await updateTodo({ id, title, body });
+    await updateItem({ id, title, body });
     res.sendStatus(200);
   })
 );
@@ -60,7 +64,7 @@ api.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
     const { title, body } = req.body;
-    await updateTodo({ id, title, body });
+    await updateItem({ id, title, body });
     res.sendStatus(200);
   })
 );
@@ -70,7 +74,7 @@ api.delete(
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    await deleteTodo(id);
+    await deleteItem(id);
 
     res.sendStatus(200);
   })

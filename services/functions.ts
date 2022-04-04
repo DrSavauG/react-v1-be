@@ -8,12 +8,13 @@ export async function getSome(page: number, limit: number = 10) {
     .limit(limit);
 }
 
-export async function createTodo(data: Object) {
-  const todo = new Schema(data);///todo
+export async function createItem(data: Object) {
+  console.log(data);
+  const todo = new Schema(data);
   return await todo.save();
 }
 
-export async function updateTodo({
+export async function updateItem({
                                    id,
                                    title,
                                    body,
@@ -30,17 +31,21 @@ export async function updateTodo({
   if (typeof body !== 'boolean') {
     omited.body = body;
   }
-  return await Schema.updateOne({ _id: id }, omited);
+  return Schema.updateOne({ _id: id }, omited);
 }
 
-export async function deleteTodo(id: string) {
+export async function deleteItem(id: string) {
   return Schema.updateOne({ _id: id }, { _deletedAt: Date.now() });
 }
 
-export async function getTodoById(id: string) {
+export async function getItemById(id: string) {
   return Schema.find({ _id: id });
 }
 
 export function jsonStreamStringify() {
   return new JsonStreamStringify(Schema.find({ _deletedAt: null }).stream());
 }
+export function jsonStreamStringifyAll() {
+  return new JsonStreamStringify(Schema.find({}).stream());
+}
+
