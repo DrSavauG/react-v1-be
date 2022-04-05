@@ -1,5 +1,5 @@
 {
-  "watch": ["routes","services","index.ts"],
+  "watch": ["routes","services","models","controllers","DTO","index.ts"],
   "ext": "ts",
   "ignore": ["*.test.ts"],
   "delay": "3",

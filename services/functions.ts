@@ -42,10 +42,8 @@ export async function getItemById(id: string) {
   return Schema.find({ _id: id });
 }
 
-export function jsonStreamStringify() {
-  return new JsonStreamStringify(Schema.find({ _deletedAt: null }).stream());
+export function jsonStreamStringify(what:Object) {
+  return new JsonStreamStringify(Schema.find(what).stream());
 }
-export function jsonStreamStringifyAll() {
-  return new JsonStreamStringify(Schema.find({}).stream());
-}
+
 
