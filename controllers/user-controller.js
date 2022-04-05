@@ -26,6 +26,10 @@ class UserController {
   async getUsers(req,res,next){
    res.json([123,1231]);
   }
+  async activate(req,res,next){
+
+  }
+
 
 }
 

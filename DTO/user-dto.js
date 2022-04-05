@@ -1,4 +1,5 @@
 export default class UserDto {
+  //todo fix this
   email;
   id;
   isActivated;

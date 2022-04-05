@@ -19,6 +19,10 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('src'));
 app.use('/', api);
+//
+// console.log('SMTP_USER',process.env.SMTP_USER);
+// console.log('SMTP_PASSWORD',process.env.SMTP_PASSWORD);
+// console.log('npm_package_name',process.env.npm_package_name);
 
 app.all('*', (req: Request, res: Response) => {
   res.sendStatus(404);

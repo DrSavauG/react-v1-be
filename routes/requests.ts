@@ -14,8 +14,12 @@ const userController = require('../controllers/user-controller');
 const { body } = require('express-validator');
 const api = Router();
 /////
-api.get('/users',userController.getUsers);
 api.post('/registration',userController.registration);
+// api.post('/login',userController.login);
+// api.post('/logout',userController.logout);
+api.post('/activate/:link',userController.activate);
+// api.post('/refresh',userController.refresh);
+api.get('/users',userController.getUsers);
 //
 // api.post('/registration',
 //   body('email').isEmail(),
