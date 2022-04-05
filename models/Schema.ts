@@ -4,10 +4,6 @@ const schema = new Schema({
     type: String,
     required: true,
   },
-  // body:{
-  //   type:Boolean,
-  //   required:true
-  // },
   url: {
     type: String,
     required: true,

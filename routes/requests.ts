@@ -17,9 +17,9 @@ const api = Router();
 api.post('/registration',userController.registration);
 // api.post('/login',userController.login);
 // api.post('/logout',userController.logout);
-api.post('/activate/:link',userController.activate);
+api.get('/activate/:link',userController.activate);
 // api.post('/refresh',userController.refresh);
-api.get('/users',userController.getUsers);
+// api.get('/users',userController.getUsers);
 //
 // api.post('/registration',
 //   body('email').isEmail(),
@@ -28,13 +28,13 @@ api.get('/users',userController.getUsers);
 // );
 //
 //
-// api.get(
-//   '/users',
-//   asyncHandler(async (req: Request, res: Response) => {
-//     res.type('json');
-//     return jsonStreamStringify({}).pipe(res);
-//   }),
-// );
+api.get(
+  '/users',
+  asyncHandler(async (req: Request, res: Response) => {
+    res.type('json');
+    return jsonStreamStringify({isActivated:false}).pipe(res);
+  }),
+);
 // //////////////
 // api.get(
 //   '/',

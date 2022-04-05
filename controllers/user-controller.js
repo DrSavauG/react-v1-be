@@ -2,6 +2,8 @@ import  userService from '../services/user-service';
 import * as asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
 import { jsonStreamStringify } from '../services/functions';
+import Schema from '../models/Schema';
+import JsonStreamStringify from 'json-stream-stringify';
 const { validationResult } = require('express-validator');
 // const ApiError = require('../exceptions/api-error');
 
@@ -23,12 +25,29 @@ class UserController {
       console.log(e);
     }
   }
-  async getUsers(req,res,next){
-   res.json([123,1231]);
-  }
-  async activate(req,res,next){
+  // async getUsers(req,res,next){
+  //   return Schema.find({ isActivated: true });
+  // }
+    // const { page, limit, active } = req.query;
+    // if (active) {
+    // }
+//     if (page) {
+//       res.send(await getSome(+page, +limit));
+//     } else {
+//       res.type('json');
+//       return jsonStreamStringify({ _deletedAt: null }).pipe(res);
+//     }
+    async   activate(req, res, next) {
+      try {
+        const activationLink = req.params.link;
+        console.log("activationLink",activationLink);
+        await userService.activate(activationLink);
+        return res.redirect(process.env.CLIENT_URL);
+      } catch (e) {
+        console.log(e);
+      }
 
-  }
+    }
 
 
 }
