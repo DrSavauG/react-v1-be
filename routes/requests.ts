@@ -1,5 +1,6 @@
 import * as asyncHandler from 'express-async-handler';
 import { Router, Request, Response } from 'express';
+const authMiddleware = require('../middlewares/auth-middleware');
 
 import {
   jsonStreamStringify,
@@ -20,6 +21,8 @@ api.post('/registration',
 api.get('/activate/:link',userController.activate);
 api.post('/login', userController.login);
 api.post('/logout', userController.logout);
+api.get('/users', authMiddleware, userController.getUsers);
+
 
 
 
