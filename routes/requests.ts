@@ -13,28 +13,20 @@ import {
 const userController = require('../controllers/user-controller');
 const { body } = require('express-validator');
 const api = Router();
-/////
-api.post('/registration',userController.registration);
-// api.post('/login',userController.login);
-// api.post('/logout',userController.logout);
+api.post('/registration',
+  body('email').isEmail(),
+  body('password').isLength({min: 3, max: 32}),
+  userController.registration);
 api.get('/activate/:link',userController.activate);
-// api.post('/refresh',userController.refresh);
-// api.get('/users',userController.getUsers);
-//
-// api.post('/registration',
-//   body('email').isEmail(),
-//   body('password').isLength({ min: 3, max: 32 }),
-//   userController.registration,
-// );
-//
-//
-api.get(
-  '/users',
-  asyncHandler(async (req: Request, res: Response) => {
-    res.type('json');
-    return jsonStreamStringify({isActivated:false}).pipe(res);
-  }),
-);
+api.post('/login', userController.login);
+api.post('/logout', userController.logout);
+
+
+
+
+
+
+
 // //////////////
 // api.get(
 //   '/',

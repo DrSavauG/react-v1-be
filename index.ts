@@ -9,7 +9,9 @@ const cookieParser = require('cookie-parser');
 const promisifyExpress = require('promisify-express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const errorMiddleware = require('./middlewares/error-midleware');
 const app = express();
+
 
 promisifyExpress(app);
 
@@ -28,6 +30,7 @@ app.all('*', (req: Request, res: Response) => {
   res.sendStatus(404);
 });
 
+app.use(errorMiddleware);
 
 const start = async () => {
   try {
