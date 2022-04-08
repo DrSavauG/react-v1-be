@@ -3,7 +3,6 @@ import UserModel from '../models/user-model';
 import mailService from './mail-service';
 import UserDto from '../DTO/user-dto';
 import tokenService from '../services/token-service';
-import FilmSchema from "../models/film-model";
 
 const ApiError = require('../exeptions/api-error');
 
@@ -17,15 +16,12 @@ class UserService {
       throw ApiError.BadRequest(`Пользователь  с адресом ${email} уже существует`);
     }
     const hashPassword = await bcrypt.hash(password, 3);
-    const activationLink = uuid.v4();/////////////////////
-
-    const user = await UserModel.create({ email, password: hashPassword, activationLink });
+    const activationLink = uuid.v4();
+    const user = await UserModel.create({email, password: hashPassword, activationLink});
     await mailService.sendActivationMail(email, `${process.env.API_URL}/roulette/activate/${activationLink}`);
-
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
-
     return { ...tokens, user: userDto };
   }
 
@@ -55,8 +51,7 @@ class UserService {
   }
 
   async logout(refreshToken) {
-    const token = await tokenService.removeToken(refreshToken);
-    return token;
+    return await tokenService.removeToken(refreshToken);
   }
 
   async refresh(refreshToken) {
@@ -78,19 +73,7 @@ class UserService {
   }
 
   async getAllUsers() {
-    const users = await UserModel.find();
-    return users;
-  }
-
-  async getAllFilms() {
-    const films = await FilmSchema.find();
-    return films;
-  }
-
-  async addFilm(arg) {
-    console.log(arg.arg)
-    const createFilm = new FilmSchema(arg.arg);
-    return await createFilm.save();
+    return UserModel.find();
   }
 
 }

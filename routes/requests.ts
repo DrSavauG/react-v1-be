@@ -1,7 +1,6 @@
-// import * as asyncHandler from 'express-async-handler';
 import { Router } from 'express';
 const authMiddleware = require('../middlewares/auth-middleware');
-
+import filmController from '../controllers/film-controllers';
 const userController = require('../controllers/user-controller');
 const { body } = require('express-validator');
 const api = Router();
@@ -15,72 +14,14 @@ api.post('/login', userController.login);
 api.post('/logout', userController.logout);
 api.get('/users', authMiddleware, userController.getUsers);
 api.get('/refresh', userController.refresh);
-api.get('/films',userController.getFilms);
-api.post('/films',userController.addFilm)
+api.get('/films',filmController.getFilms);
+api.post('/films',filmController.addFilm);
+api.get('/films/:id',filmController.getFilmById);
+api.put('/films/:id',filmController.updateFilm)
+// api.patch
+api.delete('/films/:id',filmController.deleteFilm)
 
 
 
-
-
-
-
-// //////////////
-// api.get(
-//   '/',
-//   asyncHandler(async (req: Request, res: Response) => {
-//     const { page, limit, all } = req.query;
-//     if (all) {
-//       res.type('json');
-//       return jsonStreamStringify({}).pipe(res);
-//     }
-//     if (page) {
-//       res.send(await getSome(+page, +limit));
-//     } else {
-//       res.type('json');
-//       return jsonStreamStringify({ _deletedAt: null }).pipe(res);
-//     }
-//   })
-// );
-//
-// api.get(
-//   '/:id',
-//   asyncHandler(async (req: Request, res: Response) => {
-//     const { id } = req.params;
-//     res.send(await getItemById(id));
-//   })
-// );
-//
-//
-//
-// api.put(
-//   '/:id',
-//   asyncHandler(async (req: Request, res: Response) => {
-//     const { id } = req.params;
-//     const { title, body } = req.body;
-//     await updateItem({ id, title, body });
-//     res.sendStatus(200);
-//   })
-// );
-//
-// api.patch(
-//   '/:id',
-//   asyncHandler(async (req: Request, res: Response) => {
-//     const { id } = req.params;
-//     const { title, body } = req.body;
-//     await updateItem({ id, title, body });
-//     res.sendStatus(200);
-//   })
-// );
-//
-// api.delete(
-//   '/:id',
-//   asyncHandler(async (req: Request, res: Response) => {
-//     const { id } = req.params;
-//
-//     await deleteItem(id);
-//
-//     res.sendStatus(200);
-//   })
-// );
 
 export default api;

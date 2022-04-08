@@ -5,6 +5,7 @@ import  userService from '../services/user-service';
 // import JsonStreamStringify from 'json-stream-stringify';
 const { validationResult } = require('express-validator');
 const ApiError = require('../exeptions/api-error');
+import filmService from '../services/film-service';
 
 class UserController {
   async registration(req, res, next) {
@@ -74,25 +75,6 @@ class UserController {
       next(e);
     }
   }
-
-  async getFilms(req, res, next) {
-    try {
-      const films = await userService.getAllFilms();
-      return res.json(films);
-    } catch (e) {
-      next(e);
-    }
-  }
-  async addFilm(req, res, next) {
-    try {
-      const userData = await userService.addFilm(req.body);
-      // res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-      return res.json(userData);
-    } catch (e) {
-      next(e);
-    }
-  }
-
 
 }
 
