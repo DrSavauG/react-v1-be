@@ -12,18 +12,20 @@ const cors = require('cors');
 const errorMiddleware = require('./middlewares/error-midleware');
 const app = express();
 
-
 promisifyExpress(app);
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: process.env.CLIENT_URL
+}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('src'));
 app.use('/', api);
 //
 // console.log('SMTP_USER',process.env.SMTP_USER);
-// console.log('SMTP_PASSWORD',process.env.SMTP_PASSWORD);
+console.log('CLIENT_URL',process.env.CLIENT_URL);
 // console.log('npm_package_name',process.env.npm_package_name);
 
 app.all('*', (req: Request, res: Response) => {

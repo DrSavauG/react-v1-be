@@ -1,8 +1,10 @@
 import UserModel from '../models/user-model';
-import { Request, Response, NextFunction } from 'express';
+// import {Request, Response, NextFunction} from 'express';
 import mailService from './mail-service';
 import UserDto from '../DTO/user-dto';
 import tokenService from '../services/token-service';
+import FilmSchema from "../models/film-model";
+
 const ApiError = require('../exeptions/api-error');
 
 const bcrypt = require('bcrypt');
@@ -10,7 +12,7 @@ const uuid = require('uuid');
 
 class UserService {
   async registration(email, password) {
-    const candidate = await UserModel.findOne({ email });
+    const candidate = await UserModel.findOne({email});
     if (candidate) {
       throw ApiError.BadRequest(`Пользователь  с адресом ${email} уже существует`);
     }
@@ -49,7 +51,7 @@ class UserService {
     const tokens = tokenService.generateTokens({ ...userDto });
 
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
-    return { ...tokens, user: userDto };
+    return {...tokens, user: userDto};
   }
 
   async logout(refreshToken) {
@@ -57,6 +59,39 @@ class UserService {
     return token;
   }
 
+  async refresh(refreshToken) {
+    if (!refreshToken) {
+      throw ApiError.UnauthorizedError();
+    }
+    const userData = tokenService.validateRefreshToken(refreshToken);
+    const tokenFromDb = await tokenService.findToken(refreshToken);
+    if (!userData || !tokenFromDb) {
+      throw ApiError.UnauthorizedError();
+    }
+
+    const user = await UserModel.findById(userData.id);
+    const userDto = new UserDto(user); //todo вынести в йункцию
+    const tokens = tokenService.generateTokens({...userDto});
+
+    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    return {...tokens, user: userDto};
+  }
+
+  async getAllUsers() {
+    const users = await UserModel.find();
+    return users;
+  }
+
+  async getAllFilms() {
+    const films = await FilmSchema.find();
+    return films;
+  }
+
+  async addFilm(arg) {
+    console.log(arg.arg)
+    const createFilm = new FilmSchema(arg.arg);
+    return await createFilm.save();
+  }
 
 }
 

@@ -1,15 +1,6 @@
-import * as asyncHandler from 'express-async-handler';
-import { Router, Request, Response } from 'express';
+// import * as asyncHandler from 'express-async-handler';
+import { Router } from 'express';
 const authMiddleware = require('../middlewares/auth-middleware');
-
-import {
-  jsonStreamStringify,
-  getSome,
-  createItem,
-  getItemById,
-  updateItem,
-  deleteItem,
-} from '../services/functions';
 
 const userController = require('../controllers/user-controller');
 const { body } = require('express-validator');
@@ -18,11 +9,14 @@ api.post('/registration',
   body('email').isEmail(),
   body('password').isLength({min: 3, max: 32}),
   userController.registration);
+
 api.get('/activate/:link',userController.activate);
 api.post('/login', userController.login);
 api.post('/logout', userController.logout);
 api.get('/users', authMiddleware, userController.getUsers);
-
+api.get('/refresh', userController.refresh);
+api.get('/films',userController.getFilms);
+api.post('/films',userController.addFilm)
 
 
 
@@ -56,17 +50,7 @@ api.get('/users', authMiddleware, userController.getUsers);
 //   })
 // );
 //
-// api.post(
-//   '/',
-//   asyncHandler(async (req: Request, res: Response) => {
-//     const { title, body = false } = req.body;
-//     if (!title) {
-//       return res.sendStatus(418);
-//     }
-//     const outcome = await createItem(req.body);
-//     res.json(outcome._id);
-//   })
-// );
+//
 //
 // api.put(
 //   '/:id',

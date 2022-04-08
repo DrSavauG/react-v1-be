@@ -1,6 +1,4 @@
 module.exports = class ApiError extends Error {
-  //todo убрать  status;
-  //   errors;
   status;
   errors;
 

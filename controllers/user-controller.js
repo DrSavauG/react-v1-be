@@ -1,9 +1,8 @@
 import  userService from '../services/user-service';
-import * as asyncHandler from 'express-async-handler';
-import { Request, Response } from 'express';
-import { jsonStreamStringify } from '../services/functions';
-import Schema from '../models/Schema';
-import JsonStreamStringify from 'json-stream-stringify';
+// import * as asyncHandler from 'express-async-handler';
+// import { Request, Response } from 'express';
+// import { jsonStreamStringify } from '../services/film-service';
+// import JsonStreamStringify from 'json-stream-stringify';
 const { validationResult } = require('express-validator');
 const ApiError = require('../exeptions/api-error');
 
@@ -20,14 +19,12 @@ class UserController {
       res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
       return res.json(userData);
     } catch (e) {
-      // next(e);
       next(e);
     }
   }
-    async   activate(req, res, next) {
+    async activate(req, res, next) {
       try {
         const activationLink = req.params.link;
-        console.log('activationLink', activationLink);
         await userService.activate(activationLink);
         return res.redirect(process.env.CLIENT_URL);
       } catch (e) {
@@ -58,8 +55,45 @@ class UserController {
     }
   }
 
+  async refresh(req, res, next) {
+    try {
+      const {refreshToken} = req.cookies;
+      const userData = await userService.refresh(refreshToken);
+      res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})//todo refactor
+      return res.json(userData);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async getUsers(req, res, next) {
+    try {
+      const users = await userService.getAllUsers();
+      return res.json(users);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async getFilms(req, res, next) {
+    try {
+      const films = await userService.getAllFilms();
+      return res.json(films);
+    } catch (e) {
+      next(e);
+    }
+  }
+  async addFilm(req, res, next) {
+    try {
+      const userData = await userService.addFilm(req.body);
+      // res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+      return res.json(userData);
+    } catch (e) {
+      next(e);
+    }
+  }
+
 
 }
-
 
 module.exports = new UserController();
