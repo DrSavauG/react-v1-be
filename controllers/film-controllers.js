@@ -1,10 +1,16 @@
 import filmService from '../services/film-service';
 
 class FilmController {
+
     async getFilms(req, res, next) {
         try {
-            const films = await filmService.getFilms({_deletedAt: null});
-            return res.json(films);
+            const {page, limit} = req.query;
+            if (page) {
+                res.send(await filmService.getSome(page, limit));
+            } else {
+                res.type('json');
+                return filmService.getFilms({_deletedAt: null}).pipe(res);
+            }
         } catch (e) {
             next(e);
         }
@@ -50,4 +56,4 @@ class FilmController {
     }
 }
 
-export default new FilmController();
+module.exports = new FilmController();

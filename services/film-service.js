@@ -1,9 +1,15 @@
 import FilmSchema from "../models/film-model";
+const JsonStreamStringify = require( "json-stream-stringify");
 
 class FilmService {
-    async getFilms(arg) {
-        const films = await FilmSchema.find(arg);
-        return films;
+    async getSome(page,limit=10) {
+        return FilmSchema.find({ _deletedAt: null })
+            .skip(page > 0 ? (page * 1 - 1) * limit : 0)
+            .limit(+limit);
+    }
+
+     getFilms(arg) {
+        return new JsonStreamStringify(FilmSchema.find(arg).stream());
     }
 
     async addFilm(arg) {

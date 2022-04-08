@@ -1,6 +1,6 @@
 import { Router } from 'express';
 const authMiddleware = require('../middlewares/auth-middleware');
-import filmController from '../controllers/film-controllers';
+const filmController =require('../controllers/film-controllers') ;
 const userController = require('../controllers/user-controller');
 const { body } = require('express-validator');
 const api = Router();
