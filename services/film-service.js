@@ -13,7 +13,7 @@ class FilmService {
     }
 
     async addFilm(arg) {
-        const createFilm = new FilmSchema(arg);
+        const createFilm = new FilmSchema(arg.arg);
         return await createFilm.save();
     }
 
