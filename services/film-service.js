@@ -22,7 +22,7 @@ class FilmService {
     }
 
     async updateFilm(id, params) {
-        return FilmSchema.updateOne({_id: id}, params);
+        return FilmSchema.updateOne({_id: id}, params.arg);
     }
 
     async deleteFilm(id, params) {
