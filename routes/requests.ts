@@ -15,11 +15,11 @@ api.post('/logout', userController.logout);
 api.get('/users', authMiddleware, userController.getUsers);
 api.get('/refresh', userController.refresh);
 api.get('/films',filmController.getFilms);
-api.post('/films',filmController.addFilm);
+api.post('/films',authMiddleware,filmController.addFilm);
 api.get('/films/:id',filmController.getFilmById);
-api.put('/films/:id',filmController.updateFilm)
+api.put('/films/:id',authMiddleware,filmController.updateFilm)
 // api.patch
-api.delete('/films/:id',filmController.deleteFilm)
+api.delete('/films/:id',authMiddleware,filmController.deleteFilm)
 
 
 
