@@ -2,15 +2,17 @@ import FilmSchema from "../models/film-model";
 const JsonStreamStringify = require( "json-stream-stringify");
 
 class FilmService {
-    async getSome(params) {
-        console.log("params",params);
-        const {page=0,limit=20} = params;
-        return FilmSchema.find(JSON.parse(params))
+    async getSome(req) {
+        const params = JSON.parse(req)
+        console.log("params", params);
+        const {page = 1, limit = 20} = params;
+        return FilmSchema.find(params.find)
+            .sort(params.sort)
             .skip(page > 0 ? (page * 1 - 1) * limit : 0)
-            .limit(+limit);
+            .limit(+limit)
     }
 
-     getFilms(arg) {
+    getFilms(arg) {
         return new JsonStreamStringify(FilmSchema.find(arg).stream());
     }
 
