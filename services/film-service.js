@@ -2,8 +2,10 @@ import FilmSchema from "../models/film-model";
 const JsonStreamStringify = require( "json-stream-stringify");
 
 class FilmService {
-    async getSome(page,limit=10) {
-        return FilmSchema.find({ _deletedAt: null })
+    async getSome(params) {
+        console.log("params",params);
+        const {page=0,limit=20} = params;
+        return FilmSchema.find(JSON.parse(params))
             .skip(page > 0 ? (page * 1 - 1) * limit : 0)
             .limit(+limit);
     }

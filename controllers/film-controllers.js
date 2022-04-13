@@ -4,12 +4,12 @@ class FilmController {
 
     async getFilms(req, res, next) {
         try {
-            const {page, limit} = req.query;
-            if (page) {
-                res.send(await filmService.getSome(page, limit));
+            const {params} = req.query;
+            if (params) {
+                res.send(await filmService.getSome(params));
             } else {
                 res.type('json');
-                return filmService.getFilms({_deletedAt: null}).pipe(res);
+                return filmService.getFilms({}).pipe(res);
             }
         } catch (e) {
             next(e);
